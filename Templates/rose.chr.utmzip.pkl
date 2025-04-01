@@ -12,7 +12,7 @@ logoSvg = new CHR.Icon {
     fill = roseColor
 }
 
-additionalDisks = List(100.mb, 100.mb, 100.mb)
+additionalDisks = List(10.gb, 10.gb, 10.gb)
 
 // rose specific extensions
 roseColor = CHR.black
