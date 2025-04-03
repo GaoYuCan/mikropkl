@@ -93,7 +93,7 @@ RouterOS documentation is available at https://help.mikrotik.com/docs, with Mikr
 #### "Free" CHR is limited to 1Mb/s
 The CHR packages contain no license, so they run in "free" mode.  The free license level allows CHR to run indefinitely but is limited to 1Mb/s upload per interface.  All features provided by CHR are available without restrictions, other than speed.  There is a "trial" mode – which is also free – but you need to register at https://www.mikrotik.com/client to generate a trial license in CHR.  With a valid account, the trial mode can be activated using CHR's terminal:
 ```routeros
-/system/license/renew account=$myaccount password=$mypassword level=p10 
+/system/license/renew account=[/terminal/ask prompt="mikrotik.com user:"] password=[/terminal/ask prompt="mikrotik.com password:"] level=p10 
 ```
 This will remove the 1Mb/s limit, and allow up 10Gb/s, with only restriction is upgrades are not possible after 60 days without a paid license.  See Mikrotik's [CHR documentation](https://help.mikrotik.com/docs/spaces/ROS/pages/18350234/Cloud+Hosted+Router+CHR#CloudHostedRouter%2CCHR-Freelicenses) for licensing details.
 
@@ -107,7 +107,7 @@ After installing and starting the machine, ROSE storage is disabled by default. 
 ```
 You will need to reboot to install ROSE package needed for storage features.  As a starting example, you can format and SMB share the extra disks in ROSE CHR using:
 ```routeros
- :foreach d in=[/disk/find] do={/disk format-drive $d file-system=btrfs smb-sharing=yes without-paging}          
+ :foreach d in=[/disk/find] do={/disk format-drive $d file-system=btrfs without-paging; /disk set $d smb-sharing=yes smb-user=[/terminal/ask prompt="SMB user" preinput="rose"]; smb-password=[/terminal/ask prompt="SMB password" preinput=""]}          
 ```
 Once formated, you then use any of the BTRFS features, including RAID 1 and RAID 10 – or, use another file system or other storage features, including snapshots.  See Mikrotik's [ROSE documentation](https://help.mikrotik.com/docs/x/HwCZEQ) for more information.
 
