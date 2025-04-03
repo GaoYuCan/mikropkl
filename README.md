@@ -97,13 +97,22 @@ The CHR packages contain no license, so they run in "free" mode.  The free licen
 ```
 This will remove the 1Mb/s limit, and allow up 10Gb/s, with only restriction is upgrades are not possible after 60 days without a paid license.  See Mikrotik's [CHR documentation](https://help.mikrotik.com/docs/spaces/ROS/pages/18350234/Cloud+Hosted+Router+CHR#CloudHostedRouter%2CCHR-Freelicenses) for licensing details.
 
-#### "ROSE" images are the same CHR, just with 3 empty disks
-The `rose.*` images are regular CHR images but with disks added by `pkl`/`Makefile` based on the "manifest", as an example of how to further extend the `pkl` framework here to support "sub" machine classes.  But the primary functional usage is to allow test storage-related features _safely_ in CHR and without a lot of manual configuration.  After installing and starting the machine, ROSE storage is disabled by default.  To add the "rose-storage" package to CHR:
+#### "ROSE" images are the same CHR, just with 4 empty disks
+The `rose.*` images are regular CHR images but with disks added by `pkl`/`Makefile` based on the "manifest", as an example of how to further extend the `pkl` framework here to support "sub" machine classes.  But the primary functional usage is to allow test storage-related features _safely_ in CHR and without a lot of manual configuration.  
+
+##### Using "ROSE" feature
+After installing and starting the machine, ROSE storage is disabled by default.  To add the "rose-storage" package to CHR, use following commands in terminal, which will cause a reboot:
 ```routeros
-/system/package/update/check-for-update
-/system/package/enable rose-storage
-/system/reboot
+  /system/package/update/check-for-update
+  /system/package/enable rose-storage
+  /system/package/apply-changes
 ```
+You will need to reboot to install ROSE package needed for storage features.  As a starting example, you can format and SMB share the extra disks in ROSE CHR using:
+```routeros
+ :foreach d in=[/disk/find] do={/disk format-drive $d file-system=btrfs smb-sharing=yes without-paging}          
+```
+Once formated, you then use any of the BTRFS features, including RAID 1 and RAID 10 – or, use another file system or other storage features, including snapshots.  See Mikrotik's [ROSE documentation](https://help.mikrotik.com/docs/x/HwCZEQ) for more information.
+
 
 > [!TIP]
 > #### RouterOS also employs a unique "configuration language"
