@@ -103,9 +103,7 @@ The `rose.*` images are regular CHR images but with disks added by `pkl`/`Makefi
 ##### Using "ROSE" feature
 After installing and starting the machine, ROSE storage is disabled by default.  To add the "rose-storage" package to CHR, use following commands in terminal, which will cause a reboot:
 ```routeros
-  /system/package/update/check-for-update
-  /system/package/enable rose-storage
-  /system/package/apply-changes
+ /system/package { update/check-for-updates duration=10s; enable rose-storage; apply-changes }        
 ```
 You will need to reboot to install ROSE package needed for storage features.  As a starting example, you can format and SMB share the extra disks in ROSE CHR using:
 ```routeros
